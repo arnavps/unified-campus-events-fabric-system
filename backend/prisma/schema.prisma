@@ -1,0 +1,344 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum Role {
+  STUDENT
+  ORGANIZER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum EventType {
+  WORKSHOP
+  HACKATHON
+  SEMINAR
+  WEBINAR
+  CULTURAL_EVENT
+  SPORTS_EVENT
+  CLUB_ACTIVITY
+  COMPETITION
+  CONFERENCE
+  GUEST_LECTURE
+  OTHER
+}
+
+enum Category {
+  TECHNICAL
+  CULTURAL
+  SPORTS
+  SOCIAL
+  ACADEMIC
+  PROFESSIONAL
+  ENTERTAINMENT
+}
+
+enum EventState {
+  CREATED
+  PUBLISHED
+  LIVE
+  COMPLETED
+  CANCELLED
+  ARCHIVED
+}
+
+enum AttendanceMethod {
+  MANUAL
+  QR_CODE
+  SELF_CHECKIN
+  GEOFENCE
+  HYBRID
+}
+
+enum RegistrationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+  WAITLISTED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+enum CertificateStatus {
+  PENDING
+  GENERATED
+  ISSUED
+  REVOKED
+}
+
+enum Priority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+// Models
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  firstName     String
+  lastName      String
+  role          Role      @default(STUDENT)
+  institutionId String?
+  department    String?
+  year          Int?
+  rollNumber    String?   @unique
+  phone         String?
+  avatar        String?
+  isActive      Boolean   @default(true)
+  emailVerified Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  organizedEvents     Event[]            @relation("Organizer")
+  registrations       Registration[]
+  attendances         Attendance[]
+  certificates        Certificate[]
+  feedback            Feedback[]
+  participationProfile ParticipationProfile?
+}
+
+model Event {
+  id              String        @id @default(uuid())
+  title           String
+  description     String
+  eventType       EventType
+  category        Category
+  state           EventState    @default(CREATED)
+  
+  // Scheduling
+  startDateTime   DateTime
+  endDateTime     DateTime
+  registrationDeadline DateTime?
+  
+  // Location
+  venue           String
+  isOnline        Boolean       @default(false)
+  meetingLink     String?
+  
+  // Capacity
+  maxParticipants Int?
+  minParticipants Int?
+
+  // Geolocation
+  latitude        Float?
+  longitude       Float?
+  geofenceRadius  Int?     // in meters
+  
+  // Organizer Info
+  organizerId     String
+  organizer       User          @relation("Organizer", fields: [organizerId], references: [id])
+  coOrganizers    String      // stored as JSON string or comma separated
+  department      String?
+  
+  // Attendance Settings
+  attendanceMethod AttendanceMethod @default(MANUAL)
+  requiresApproval Boolean       @default(false)
+  
+  // Certificate Settings
+  certificateEnabled Boolean     @default(true)
+  certificateTemplate String?
+  certificateEligibility Json?
+  
+  // Media
+  bannerImage     String?
+  attachments     String      // stored as JSON string
+  
+  // Metadata
+  tags            String      // stored as JSON string
+  isPublished     Boolean       @default(false)
+  isFeatured      Boolean       @default(false)
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  publishedAt     DateTime?
+  completedAt     DateTime?
+  archivedAt      DateTime?
+  
+  // Relations
+  registrations   Registration[]
+  attendances     Attendance[]
+  certificates    Certificate[]
+  announcements   Announcement[]
+  feedback        Feedback[]
+}
+
+model Registration {
+  id              String             @id @default(uuid())
+  eventId         String
+  event           Event              @relation(fields: [eventId], references: [id])
+  userId          String
+  user            User               @relation(fields: [userId], references: [id])
+  
+  status          RegistrationStatus @default(PENDING)
+  
+  // Custom form responses
+  formResponses   Json?
+  
+  // Registration metadata
+  registeredAt    DateTime           @default(now())
+  approvedAt      DateTime?
+  cancelledAt     DateTime?
+  cancellationReason String?
+  
+  // Waitlist
+  isWaitlisted    Boolean            @default(false)
+  waitlistPosition Int?
+  
+  @@unique([eventId, userId])
+}
+
+model Attendance {
+  id              String           @id @default(uuid())
+  eventId         String
+  event           Event            @relation(fields: [eventId], references: [id])
+  userId          String
+  user            User             @relation(fields: [userId], references: [id])
+  
+  status          AttendanceStatus @default(ABSENT)
+  
+  // Check-in details
+  checkInTime     DateTime?
+  checkOutTime    DateTime?
+  checkInMethod   AttendanceMethod?
+  
+  // Verification
+  verifiedBy      String?
+  verificationNote String?
+  
+  // Location
+  latitude        Float?
+  longitude       Float?
+  
+  // QR Code
+  qrCodeScan      String?
+  
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  @@unique([eventId, userId])
+}
+
+model Certificate {
+  id              String            @id @default(uuid())
+  certificateNumber String          @unique
+  
+  eventId         String
+  event           Event             @relation(fields: [eventId], references: [id])
+  userId          String
+  user            User              @relation(fields: [userId], references: [id])
+  
+  // Certificate details
+  title           String
+  description     String?
+  templateUsed    String?
+  
+  // Generation
+  status          CertificateStatus @default(PENDING)
+  issuedAt        DateTime?
+  pdfUrl          String?
+  
+  // Verification
+  verificationHash String           @unique
+  isVerified      Boolean           @default(true)
+  
+  // Metadata
+  metadata        Json?
+  
+  createdAt       DateTime          @default(now())
+  
+  @@unique([eventId, userId])
+}
+
+model ParticipationProfile {
+  id              String    @id @default(uuid())
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id])
+  
+  // Aggregate statistics
+  totalEventsRegistered Int   @default(0)
+  totalEventsAttended   Int   @default(0)
+  totalCertificates     Int   @default(0)
+  
+  // By category
+  eventsByCategory      Json
+  eventsByType          Json
+  
+  // Engagement metrics
+  attendanceRate        Float @default(0)
+  registrationRate      Float @default(0)
+  certificateRate       Float @default(0)
+  
+  // Timeline
+  firstEventDate        DateTime?
+  lastEventDate         DateTime?
+  
+  // Achievements
+  badges                String    // JSON string
+  achievements          Json?
+  
+  updatedAt             DateTime  @updatedAt
+}
+
+model Announcement {
+  id              String    @id @default(uuid())
+  eventId         String
+  event           Event     @relation(fields: [eventId], references: [id])
+  
+  title           String
+  message         String
+  priority        Priority  @default(NORMAL)
+  
+  // Targeting
+  sendToAll       Boolean   @default(true)
+  sendToRegistered Boolean  @default(false)
+  sendToAttended  Boolean   @default(false)
+  
+  // Channels
+  emailSent       Boolean   @default(false)
+  inAppSent       Boolean   @default(true)
+  
+  createdBy       String
+  createdAt       DateTime  @default(now())
+}
+
+model Feedback {
+  id              String    @id @default(uuid())
+  eventId         String
+  event           Event     @relation(fields: [eventId], references: [id])
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  
+  // Ratings (1-5)
+  overallRating   Int
+  contentRating   Int?
+  organizationRating Int?
+  venueRating     Int?
+  
+  // Comments
+  comments        String?
+  suggestions     String?
+  
+  // Metadata
+  isAnonymous     Boolean   @default(false)
+  submittedAt     DateTime  @default(now())
+}
