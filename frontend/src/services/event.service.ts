@@ -14,6 +14,13 @@ export const getEventById = async (id: string) => {
 
 export const createEvent = async (eventData: any) => {
     const token = localStorage.getItem('token');
+
+    if (!token) {
+        throw new Error('Not authenticated. Please log in again.');
+    }
+
+    console.log('Creating event with token:', token.substring(0, 20) + '...');
+
     const response = await axios.post(API_URL, eventData, {
         headers: { Authorization: `Bearer ${token}` }
     });
