@@ -178,7 +178,7 @@ export const bulkIssueCertificates = async (req: AuthRequest, res: Response) => 
 export const getEventCertificates = async (req: AuthRequest, res: Response) => {
     try {
         if (!req.user) return res.status(401).json({ success: false, message: 'Unauthorized' });
-        const { eventId } = req.params;
+        const eventId = req.params.eventId as string;
 
         // Verify Event & Organizer
         const event = await prisma.event.findUnique({ where: { id: eventId } });

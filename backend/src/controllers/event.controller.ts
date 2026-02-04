@@ -22,6 +22,9 @@ const createEventSchema = z.object({
     latitude: z.number().optional(),
     longitude: z.number().optional(),
     geofenceRadius: z.number().optional(),
+
+    // Banner Image
+    bannerImage: z.string().optional(),
 });
 
 export const getEvents = async (req: Request, res: Response) => {
