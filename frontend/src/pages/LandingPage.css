@@ -568,6 +568,7 @@ body:has(.landing-page) {
     font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    color: white;
 }
 
 .landing-page .event-meta-carousel {
