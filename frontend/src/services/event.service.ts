@@ -40,6 +40,7 @@ export interface Event {
         firstName: string;
         lastName: string;
     };
+    bannerImage?: string;
     state?: string;
     _count?: {
         registrations: number;
