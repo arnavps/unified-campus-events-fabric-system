@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5001/api/attendance';
+const API_URL = 'http://localhost:5000/api/attendance';
 
 export const markAttendance = async (eventId: string, status: string, latitude?: number, longitude?: number) => {
     const token = localStorage.getItem('token');
@@ -23,7 +23,7 @@ export const getEventAttendance = async (eventId: string) => {
     const response = await axios.get(`${API_URL}/events/${eventId}`, {
         headers: { Authorization: `Bearer ${token}` }
     });
-    return response.data;
+    return response.data.data;
 };
 
 export const getMyAttendance = async () => {

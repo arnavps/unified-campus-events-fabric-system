@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5001/api/analytics';
+const API_URL = 'http://localhost:5000/api/analytics';
 
 export const getOrganizerStats = async () => {
     const response = await axios.get(`${API_URL}/organizer`);
