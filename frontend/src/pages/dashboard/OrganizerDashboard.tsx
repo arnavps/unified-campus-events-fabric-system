@@ -11,9 +11,16 @@ export default function OrganizerDashboard() {
         totalRegistrations: 0,
         totalCertificates: 0
     });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        getOrganizerStats().then(setStats).catch(console.error);
+        getOrganizerStats()
+            .then(setStats)
+            .catch((error) => {
+                console.error('Failed to load stats:', error);
+                alert('Failed to load dashboard statistics. Please try logging out and back in.');
+            })
+            .finally(() => setLoading(false));
     }, []);
 
     return (

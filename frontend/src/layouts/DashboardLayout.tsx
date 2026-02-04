@@ -47,9 +47,7 @@ export default function DashboardLayout() {
                     }`}
             >
                 <div className="flex h-16 items-center border-b border-gray-100 px-6">
-                    <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30 mr-3">
-                        U
-                    </div>
+                    <img src="/logo.png" alt="UCEF Logo" className="h-10 w-10 mr-3 object-contain" />
                     <span className="text-xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
                         UCEF
                     </span>
@@ -113,7 +111,10 @@ export default function DashboardLayout() {
                     >
                         <Menu className="h-6 w-6" />
                     </button>
-                    <span className="font-display font-bold text-gray-900">UCEF</span>
+                    <div className="flex items-center gap-2">
+                        <img src="/logo.png" alt="UCEF Logo" className="h-8 w-8 object-contain" />
+                        <span className="font-display font-bold text-gray-900">UCEF</span>
+                    </div>
                     <div className="w-6" /> {/* Spacer */}
                 </header>
 
