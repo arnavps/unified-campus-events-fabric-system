@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { LayoutDashboard, Calendar, PlusCircle, List, LogOut, Menu, User } from 'lucide-react';
+import { LayoutDashboard, Calendar, PlusCircle, List, LogOut, Menu, User, Award } from 'lucide-react';
 
 export default function DashboardLayout() {
     const { user, logout } = useAuth();
@@ -23,6 +23,7 @@ export default function DashboardLayout() {
 
     if (user.role === 'ORGANIZER') {
         menuItems.push({ path: "/organizer/create-event", icon: PlusCircle, label: "Create Event" });
+        menuItems.push({ path: "/organizer/certificates", icon: Award, label: "Certificates" });
     }
 
     const handleLogout = () => {

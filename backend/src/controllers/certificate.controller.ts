@@ -67,7 +67,147 @@ export const issueCertificate = async (req: AuthRequest, res: Response) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: 'Failed to issue certificate' });
+        res.status(500).json({ success: false, message: 'Failed to verify certificate' });
+    }
+};
+
+// Bulk issue certificates for all attendees of an event
+export const bulkIssueCertificates = async (req: AuthRequest, res: Response) => {
+    try {
+        if (!req.user) return res.status(401).json({ success: false, message: 'Unauthorized' });
+        const { eventId } = req.body;
+
+        // Verify Event & Organizer
+        const event = await prisma.event.findUnique({
+            where: { id: eventId },
+            include: { organizer: true }
+        });
+
+        if (!event) return res.status(404).json({ success: false, message: 'Event not found' });
+
+        if (req.user.role === 'ORGANIZER' && event.organizerId !== req.user.userId) {
+            return res.status(403).json({ success: false, message: 'Not authorized' });
+        }
+
+        // Get all attendees with PRESENT or LATE status
+        const attendees = await prisma.attendance.findMany({
+            where: {
+                eventId,
+                status: { in: ['PRESENT', 'LATE'] }
+            },
+            include: {
+                user: true
+            }
+        });
+
+        if (attendees.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'No attendees found with PRESENT or LATE status'
+            });
+        }
+
+        const results = {
+            issued: 0,
+            alreadyIssued: 0,
+            failed: 0,
+            errors: [] as string[]
+        };
+
+        // Issue certificates for each attendee
+        for (const attendance of attendees) {
+            try {
+                // Check if already issued
+                const existing = await prisma.certificate.findUnique({
+                    where: { eventId_userId: { eventId, userId: attendance.userId } }
+                });
+
+                if (existing) {
+                    results.alreadyIssued++;
+                    continue;
+                }
+
+                // Generate Certificate
+                const certificateId = uuidv4().split('-')[0].toUpperCase();
+                const verificationHash = crypto.createHash('sha256')
+                    .update(certificateId + attendance.userId + eventId)
+                    .digest('hex');
+
+                await prisma.certificate.create({
+                    data: {
+                        certificateNumber: certificateId,
+                        eventId,
+                        userId: attendance.userId,
+                        title: `Certificate of Participation - ${event.title}`,
+                        verificationHash,
+                        status: 'ISSUED',
+                        issuedAt: new Date()
+                    }
+                });
+
+                // Send Email
+                if (attendance.user.email) {
+                    sendCertificateIssued(
+                        attendance.user.email,
+                        attendance.user.firstName,
+                        event.title,
+                        certificateId
+                    ).catch((err) => console.error('Email failed:', err));
+                }
+
+                results.issued++;
+            } catch (error: any) {
+                results.failed++;
+                results.errors.push(`Failed for user ${attendance.userId}: ${error.message}`);
+            }
+        }
+
+        res.json({
+            success: true,
+            data: results,
+            message: `Issued ${results.issued} certificates, ${results.alreadyIssued} already issued, ${results.failed} failed`
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Failed to bulk issue certificates' });
+    }
+};
+
+// Get all certificates for an event
+export const getEventCertificates = async (req: AuthRequest, res: Response) => {
+    try {
+        if (!req.user) return res.status(401).json({ success: false, message: 'Unauthorized' });
+        const { eventId } = req.params;
+
+        // Verify Event & Organizer
+        const event = await prisma.event.findUnique({ where: { id: eventId } });
+        if (!event) return res.status(404).json({ success: false, message: 'Event not found' });
+
+        if (req.user.role === 'ORGANIZER' && event.organizerId !== req.user.userId) {
+            return res.status(403).json({ success: false, message: 'Not authorized' });
+        }
+
+        const certificates = await prisma.certificate.findMany({
+            where: { eventId },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        firstName: true,
+                        lastName: true,
+                        email: true
+                    }
+                }
+            },
+            orderBy: { issuedAt: 'desc' }
+        });
+
+        res.json({ success: true, data: certificates });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Failed to fetch certificates' });
     }
 };
 

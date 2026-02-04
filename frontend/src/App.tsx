@@ -12,6 +12,7 @@ import OrganizerDashboard from '@/pages/dashboard/OrganizerDashboard';
 import AdminDashboard from '@/pages/dashboard/AdminDashboard';
 import EventAttendance from '@/pages/organizer/EventAttendance';
 import MyEvents from '@/pages/organizer/MyEvents';
+import EventCertificates from '@/pages/organizer/EventCertificates';
 import MyCertificates from '@/pages/student/MyCertificates';
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
@@ -50,6 +51,7 @@ function App() {
             <Route path="/my-certificates" element={<MyCertificates />} />
             <Route path="/organizer/create-event" element={<CreateEvent />} />
             <Route path="/organizer/my-events" element={<MyEvents />} />
+            <Route path="/organizer/certificates" element={<EventCertificates />} />
             <Route path="/organizer/events/:id/attendance" element={<EventAttendance />} />
           </Route>
 

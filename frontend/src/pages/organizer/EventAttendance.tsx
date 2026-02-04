@@ -4,8 +4,7 @@ import { getEventAttendance, markUserAttendance } from '../../services/attendanc
 import type { AttendanceRecord } from '../../services/attendance.service';
 import { getEventById } from '../../services/event.service';
 import type { Event } from '../../services/event.service';
-import { Check, X, QrCode, Award } from 'lucide-react';
-import { issueCertificate } from '../../services/certificate.service';
+import { Check, X, QrCode, Info } from 'lucide-react';
 
 export default function EventAttendance() {
     const { id } = useParams<{ id: string }>();
@@ -44,17 +43,6 @@ export default function EventAttendance() {
         }
     };
 
-    const handleIssueCertificate = async (userId: string) => {
-        if (!id) return;
-        try {
-            await issueCertificate(id, userId);
-            alert('Certificate Issued!');
-        } catch (e: any) {
-            const msg = e.response?.data?.message || 'Failed to issue certificate';
-            alert(msg);
-        }
-    };
-
     const handleSimulateScan = async () => {
         // In a real app, this would use a camera scanner library
         const userId = prompt("Enter User ID to Simulate Scan:");
@@ -80,6 +68,17 @@ export default function EventAttendance() {
                     <QrCode className="h-5 w-5" />
                     Scan QR (Simulate)
                 </button>
+            </div>
+
+            {/* Info Banner */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
+                <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                    <p className="text-sm text-blue-900 font-medium">Certificate Issuance</p>
+                    <p className="text-sm text-blue-700 mt-1">
+                        Certificates can be issued in bulk from the <strong>Certificates</strong> page in the sidebar after the event is completed.
+                    </p>
+                </div>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -118,11 +117,6 @@ export default function EventAttendance() {
                                         <button onClick={() => handleMark(record.userId, 'ABSENT')} className="text-red-600 hover:text-red-900" title="Mark Absent">
                                             <X className="h-5 w-5" />
                                         </button>
-                                        {record.status === 'PRESENT' && (
-                                            <button onClick={() => handleIssueCertificate(record.userId)} className="text-blue-600 hover:text-blue-900" title="Issue Certificate">
-                                                <Award className="h-5 w-5" />
-                                            </button>
-                                        )}
                                     </div>
                                 </td>
                             </tr>
