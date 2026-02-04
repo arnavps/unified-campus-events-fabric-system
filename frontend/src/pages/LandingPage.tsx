@@ -224,6 +224,98 @@ export default function LandingPage() {
                 </div>
             </section>
 
+            {/* Carousel Section */}
+            <section className="carousel-section" id="events">
+                <div className="carousel-container">
+                    <div className="carousel-header">
+                        <h2>Upcoming Events</h2>
+                        <p>Join hundreds of students in enriching campus experiences</p>
+                    </div>
+                    <div className="carousel-wrapper">
+                        <div className="carousel-track">
+                            <div className="event-card-carousel">
+                                <div className="event-image">🎨</div>
+                                <div className="event-content">
+                                    <h3 className="event-title">Design Thinking Workshop</h3>
+                                    <div className="event-meta-carousel">
+                                        <span>Feb 20, 2026</span>
+                                        <span>3:00 PM</span>
+                                    </div>
+                                    <span className="event-badge">CREATIVE</span>
+                                </div>
+                            </div>
+                            <div className="event-card-carousel">
+                                <div className="event-image">💻</div>
+                                <div className="event-content">
+                                    <h3 className="event-title">AI/ML Hackathon 2026</h3>
+                                    <div className="event-meta-carousel">
+                                        <span>Mar 5-7, 2026</span>
+                                        <span>48 Hours</span>
+                                    </div>
+                                    <span className="event-badge">TECHNICAL</span>
+                                </div>
+                            </div>
+                            <div className="event-card-carousel">
+                                <div className="event-image">🎭</div>
+                                <div className="event-content">
+                                    <h3 className="event-title">Annual Cultural Festival</h3>
+                                    <div className="event-meta-carousel">
+                                        <span>Mar 15, 2026</span>
+                                        <span>All Day</span>
+                                    </div>
+                                    <span className="event-badge">CULTURAL</span>
+                                </div>
+                            </div>
+                            <div className="event-card-carousel">
+                                <div className="event-image">🏃</div>
+                                <div className="event-content">
+                                    <h3 className="event-title">Sports Championship</h3>
+                                    <div className="event-meta-carousel">
+                                        <span>Apr 1-3, 2026</span>
+                                        <span>3 Days</span>
+                                    </div>
+                                    <span className="event-badge">SPORTS</span>
+                                </div>
+                            </div>
+                            <div className="event-card-carousel">
+                                <div className="event-image">🎤</div>
+                                <div className="event-content">
+                                    <h3 className="event-title">Tech Talk: Future of Web3</h3>
+                                    <div className="event-meta-carousel">
+                                        <span>Feb 25, 2026</span>
+                                        <span>5:00 PM</span>
+                                    </div>
+                                    <span className="event-badge">SEMINAR</span>
+                                </div>
+                            </div>
+                            {/* Duplicate for infinite scroll */}
+                            <div className="event-card-carousel">
+                                <div className="event-image">🎨</div>
+                                <div className="event-content">
+                                    <h3 className="event-title">Design Thinking Workshop</h3>
+                                    <div className="event-meta-carousel">
+                                        <span>Feb 20, 2026</span>
+                                        <span>3:00 PM</span>
+                                    </div>
+                                    <span className="event-badge">CREATIVE</span>
+                                </div>
+                            </div>
+                            <div className="event-card-carousel">
+                                <div className="event-image">💻</div>
+                                <div className="event-content">
+                                    <h3 className="event-title">AI/ML Hackathon 2026</h3>
+                                    <div className="event-meta-carousel">
+                                        <span>Mar 5-7, 2026</span>
+                                        <span>48 Hours</span>
+                                    </div>
+                                    <span className="event-badge">TECHNICAL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* CTA Section */}
             <section className="cta-section">
                 <div className="cta-container">
