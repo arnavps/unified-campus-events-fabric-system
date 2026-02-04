@@ -14,8 +14,10 @@ export default function MyEvents() {
             try {
                 const data = await getMyEvents();
                 setEvents(data);
-            } catch (error) {
+            } catch (error: any) {
                 console.error('Failed to load events', error);
+                const errorMessage = error.response?.data?.message || error.message || 'Failed to load events';
+                alert(`Error loading events: ${errorMessage}\n\nPlease try logging out and logging back in.`);
             } finally {
                 setLoading(false);
             }
