@@ -38,8 +38,10 @@ export default function EventAttendance() {
         try {
             await markUserAttendance(id, userId, status);
             fetchData(); // Refresh list
-        } catch (e) {
-            alert('Failed to mark attendance');
+        } catch (e: any) {
+            console.error('Failed to mark attendance:', e);
+            const errorMessage = e.response?.data?.message || e.message || 'Failed to mark attendance';
+            alert(`Error: ${errorMessage}\n\nCheck console for details`);
         }
     };
 
