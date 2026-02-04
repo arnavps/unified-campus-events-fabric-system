@@ -17,6 +17,14 @@ export const createEvent = async (eventData: any) => {
     return response.data.data;
 };
 
+export const getMyEvents = async () => {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_URL}/my-events`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data.data;
+};
+
 // Add types for Event if needed
 export interface Event {
     id: string;
@@ -31,5 +39,11 @@ export interface Event {
     organizer: {
         firstName: string;
         lastName: string;
+    };
+    state?: string;
+    _count?: {
+        registrations: number;
+        attendances: number;
+        certificates: number;
     };
 }

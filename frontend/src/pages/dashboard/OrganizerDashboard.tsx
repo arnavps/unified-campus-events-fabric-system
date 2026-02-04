@@ -39,12 +39,12 @@ export default function OrganizerDashboard() {
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <h2 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Link to="/events" className="p-4 border border-gray-100 rounded-lg hover:bg-gray-50 flex items-center justify-between">
+                    <Link to="/organizer/my-events" className="p-4 border border-gray-100 rounded-lg hover:bg-gray-50 flex items-center justify-between">
                         <span className="font-medium text-gray-700">Manage Events</span>
                         <span className="text-gray-400">→</span>
                     </Link>
-                    <Link to="/events" className="p-4 border border-gray-100 rounded-lg hover:bg-gray-50 flex items-center justify-between">
-                        <span className="font-medium text-gray-700">Scan Attendance</span>
+                    <Link to="/organizer/my-events" className="p-4 border border-gray-100 rounded-lg hover:bg-gray-50 flex items-center justify-between">
+                        <span className="font-medium text-gray-700">Track Attendance</span>
                         <span className="text-gray-400">→</span>
                     </Link>
                 </div>

@@ -94,6 +94,39 @@ export const createEvent = async (req: AuthRequest, res: Response) => {
     }
 };
 
+export const getMyEvents = async (req: AuthRequest, res: Response) => {
+    try {
+        if (!req.user) return res.status(401).json({ success: false, message: 'Unauthorized' });
+
+        const events = await prisma.event.findMany({
+            where: { organizerId: req.user.userId },
+            include: {
+                organizer: {
+                    select: {
+                        id: true,
+                        firstName: true,
+                        lastName: true,
+                        email: true
+                    }
+                },
+                _count: {
+                    select: {
+                        registrations: true,
+                        attendances: true,
+                        certificates: true
+                    }
+                }
+            },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        res.json({ success: true, data: events });
+    } catch (error) {
+        console.error('Get My Events Error:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch events' });
+    }
+};
+
 export const deleteEvent = async (req: AuthRequest, res: Response) => {
     try {
         const { id } = req.params;
