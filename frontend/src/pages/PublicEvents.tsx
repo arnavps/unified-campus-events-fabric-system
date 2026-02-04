@@ -31,14 +31,26 @@ export default function PublicEvents() {
 
     const fetchEvents = async () => {
         try {
+            console.log('Fetching events from:', 'http://localhost:5000/api/events');
             const response = await axios.get('http://localhost:5000/api/events');
-            // Filter only published events
-            const publishedEvents = response.data.data.filter((event: Event) =>
+            console.log('Response received:', response.data);
+
+            // Check if response has the expected structure
+            const eventsData = response.data.data || response.data || [];
+            console.log('Events data:', eventsData);
+
+            // Filter only published/upcoming events
+            const publishedEvents = eventsData.filter((event: Event) =>
                 new Date(event.startDateTime) > new Date()
             );
+            console.log('Filtered upcoming events:', publishedEvents);
             setEvents(publishedEvents);
         } catch (error) {
             console.error('Failed to fetch events:', error);
+            if (axios.isAxiosError(error)) {
+                console.error('Error response:', error.response?.data);
+                console.error('Error status:', error.response?.status);
+            }
         } finally {
             setLoading(false);
         }
