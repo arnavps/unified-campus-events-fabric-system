@@ -1,19 +1,28 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5001/api/registrations'; // Port 5001 from previous step
+const API_URL = 'http://localhost:5000/api/registrations';
 
 export const registerForEvent = async (eventId: string, formResponses?: any) => {
-    const response = await axios.post(API_URL, { eventId, formResponses });
+    const token = localStorage.getItem('token');
+    const response = await axios.post(API_URL, { eventId, formResponses }, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
     return response.data;
 };
 
 export const getMyRegistrations = async () => {
-    const response = await axios.get(`${API_URL}/my-registrations`);
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_URL}/my-registrations`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
     return response.data.data;
 };
 
 export const cancelRegistration = async (registrationId: string) => {
-    const response = await axios.patch(`${API_URL}/${registrationId}/cancel`);
+    const token = localStorage.getItem('token');
+    const response = await axios.patch(`${API_URL}/${registrationId}/cancel`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
     return response.data;
 };
 

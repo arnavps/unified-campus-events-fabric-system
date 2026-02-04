@@ -13,7 +13,10 @@ export const getEventById = async (id: string) => {
 };
 
 export const createEvent = async (eventData: any) => {
-    const response = await axios.post(API_URL, eventData);
+    const token = localStorage.getItem('token');
+    const response = await axios.post(API_URL, eventData, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
     return response.data.data;
 };
 
