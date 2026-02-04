@@ -88,7 +88,7 @@ export default function LandingPage() {
                             Transform campus events into meaningful engagement records. UCEF tracks your journey from registration to certification, preserving every contribution over time.
                         </p>
                         <div className="hero-cta">
-                            <button className="btn-hero btn-hero-primary" onClick={() => navigate('/events')}>Explore Events</button>
+                            <button className="btn-hero btn-hero-primary" onClick={() => navigate('/explore-events')}>Explore Events</button>
                             <button className="btn-hero btn-hero-secondary">Watch Demo</button>
                         </div>
                     </div>

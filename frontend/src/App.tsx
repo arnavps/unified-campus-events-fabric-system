@@ -15,6 +15,7 @@ import MyEvents from '@/pages/organizer/MyEvents';
 import EventCertificates from '@/pages/organizer/EventCertificates';
 import MyCertificates from '@/pages/student/MyCertificates';
 import LandingPage from '@/pages/LandingPage';
+import PublicEvents from '@/pages/PublicEvents';
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -42,6 +43,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/explore-events" element={<PublicEvents />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
