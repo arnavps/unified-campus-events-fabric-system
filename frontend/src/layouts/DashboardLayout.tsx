@@ -47,9 +47,9 @@ export default function DashboardLayout() {
                     }`}
             >
                 <div className="flex h-16 items-center border-b border-gray-100 px-6">
-                    <img src="/logo.png" alt="UCEF Logo" className="h-10 w-10 mr-3 object-contain" />
+                    <img src="/logo.png" alt="LTCE Logo" className="h-10 w-10 mr-3 object-contain" />
                     <span className="text-xl font-display font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
-                        UCEF
+                        LTCE
                     </span>
                 </div>
 
@@ -112,8 +112,8 @@ export default function DashboardLayout() {
                         <Menu className="h-6 w-6" />
                     </button>
                     <div className="flex items-center gap-2">
-                        <img src="/logo.png" alt="UCEF Logo" className="h-8 w-8 object-contain" />
-                        <span className="font-display font-bold text-gray-900">UCEF</span>
+                        <img src="/logo.png" alt="LTCE Logo" className="h-8 w-8 object-contain" />
+                        <span className="font-display font-bold text-gray-900">LTCE</span>
                     </div>
                     <div className="w-6" /> {/* Spacer */}
                 </header>

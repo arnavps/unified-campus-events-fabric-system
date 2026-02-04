@@ -60,8 +60,8 @@ export default function LandingPage() {
             <nav className="navbar">
                 <div className="nav-container">
                     <div className="logo-container">
-                        <img src="/logo.png" alt="UCEF Logo" className="logo-image" />
-                        <div className="logo">UCEF</div>
+                        <img src="/logo.png" alt="LTCE Logo" className="logo-image" />
+                        <div className="logo">LTCE</div>
                     </div>
                     <ul className="nav-links">
                         <li><a href="#home">Home</a></li>
@@ -85,7 +85,7 @@ export default function LandingPage() {
                             It's contribution made visible
                         </h1>
                         <p>
-                            Transform campus events into meaningful engagement records. UCEF tracks your journey from registration to certification, preserving every contribution over time.
+                            Transform campus events into meaningful engagement records. LTCE-UCEF tracks your journey from registration to certification, preserving every contribution over time.
                         </p>
                         <div className="hero-cta">
                             <button className="btn-hero btn-hero-primary" onClick={() => navigate('/explore-events')}>Explore Events</button>
@@ -174,7 +174,7 @@ export default function LandingPage() {
                     <div className="section-header">
                         <h2 className="section-title">Everything You Need</h2>
                         <p className="section-subtitle">
-                            From event creation to certificate generation, UCEF handles the complete participation lifecycle
+                            From event creation to certificate generation, LTCE-UCEF handles the complete participation lifecycle
                         </p>
                     </div>
                     <div className="features-grid">
@@ -335,7 +335,7 @@ export default function LandingPage() {
                 <div className="footer-container">
                     <div className="footer-grid">
                         <div className="footer-brand">
-                            <h3>UCEF</h3>
+                            <h3>LTCE</h3>
                             <p>
                                 Unified Campus Events Fabric - Where participation becomes a permanent record of contribution and growth.
                             </p>
@@ -369,7 +369,7 @@ export default function LandingPage() {
                         </div>
                     </div>
                     <div className="footer-bottom">
-                        <p>&copy; 2026 UCEF. All rights reserved. Built with passion for student engagement.</p>
+                        <p>&copy; 2026 LTCE-UCEF. All rights reserved. Built with passion for student engagement.</p>
                     </div>
                 </div>
             </footer>

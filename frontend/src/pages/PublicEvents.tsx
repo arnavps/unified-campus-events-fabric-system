@@ -83,7 +83,7 @@ export default function PublicEvents() {
                         Back to Home
                     </button>
                     <div className="header-content">
-                        <img src="/logo.png" alt="UCEF Logo" className="header-logo" />
+                        <img src="/logo.png" alt="LTCE Logo" className="header-logo" />
                         <div>
                             <h1>Upcoming Events</h1>
                             <p>Discover and join exciting campus events</p>
@@ -172,7 +172,7 @@ export default function PublicEvents() {
             <div className="footer-cta">
                 <div className="cta-content">
                     <h2>Want to create your own events?</h2>
-                    <p>Join UCEF as an organizer and start managing campus events today</p>
+                    <p>Join LTCE-UCEF as an organizer and start managing campus events today</p>
                     <button onClick={() => navigate('/register')} className="cta-button">
                         Get Started
                     </button>
