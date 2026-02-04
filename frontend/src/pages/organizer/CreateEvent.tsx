@@ -70,9 +70,10 @@ export default function CreateEvent() {
 
             await createEvent(payload);
             navigate('/organizer/my-events');
-        } catch (error) {
+        } catch (error: any) {
             console.error('Failed to create event', error);
-            alert('Failed to create event');
+            const errorMessage = error.response?.data?.message || error.response?.data?.error?.message || 'Failed to create event';
+            alert(errorMessage + '\n\nCheck console for details');
         }
     };
 
